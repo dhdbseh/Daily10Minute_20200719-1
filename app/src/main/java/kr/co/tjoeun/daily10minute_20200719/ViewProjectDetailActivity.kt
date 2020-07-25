@@ -36,6 +36,7 @@ class ViewProjectDetailActivity : BaseActivity() {
             val myIntent = Intent(mContext, ViewOngoingUsersActivity::class.java)
 
             myIntent.putExtra("projectId", mProjectId)
+            startActivity(myIntent)
 
         }
 

@@ -14,7 +14,6 @@ class Project {
 
     companion object{
 
-
         fun getProjectFromJson(json: JSONObject) : Project {
 
             val p = Project()
