@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import com.bumptech.glide.Glide
 import kr.co.tjoeun.daily10minute_20200719.R
 import kr.co.tjoeun.daily10minute_20200719.datas.Project
 
@@ -22,6 +25,18 @@ class ProjectAdapter(
         }
 
         val row = tempRow!!
+
+        val projectImg = row.findViewById<ImageView>(R.id.projectImg)
+        val projectTitle = row.findViewById<TextView>(R.id.projectTitle)
+        val projectDescription = row.findViewById<TextView>(R.id.projectDescription)
+
+        val data = mList[position]
+
+        projectTitle.text = data.title
+        projectDescription.text = data.description
+
+        Glide.with(mContext).load(data.imageUrl).into(projectImg)
+
         return row
     }
 }
