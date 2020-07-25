@@ -2,15 +2,22 @@ package kr.co.tjoeun.daily10minute_20200719
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_view_project_detail.*
+import kotlinx.android.synthetic.main.activity_view_project_detail.projectImg
+import kotlinx.android.synthetic.main.project_list_item.*
+import kr.co.tjoeun.daily10minute_20200719.datas.Project
+import kr.co.tjoeun.daily10minute_20200719.utils.ServerUtil
+import org.json.JSONObject
 
 class ViewProjectDetailActivity : BaseActivity() {
-    override fun setupEvents() {
 
-    }
+    //    이 화면에서 보여줄 프로젝트의 id값
+//    m이 붙으면 멤버변수에서 만든 것?
+    var mProjectId = 0
 
-    override fun setValues() {
-
-    }
+//    이 화면에서 보여줄 프로젝트 자체 변수
+    lateinit var mProject =
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,4 +25,41 @@ class ViewProjectDetailActivity : BaseActivity() {
         setupEvents()
         setValues()
     }
+
+    override fun setupEvents() {
+
+    }
+
+    override fun setValues() {
+
+        mProjectId = intent.getIntExtra("projectId", 0)
+
+        getProjectDetailFromServer()
+
+    }
+
+    //    프로젝트 상세 정보를 불러오는 기능
+    fun getProjectDetailFromServer() {
+
+        ServerUtil.getRequestProjectList(mContext, mProjectId, object : ServerUtil.JsonResponseHandler)
+
+            override fun onResponse(json: JSONObject){
+
+                val data = json.getJSONObject("data")
+
+                val projectObj = data.getJSONObject("project")
+
+//                projectObj로 Project 형태로 변환 -> 멤버변수로 저장
+                mProject = Project.getProjectFromJson(projectObj)
+
+//                프로젝트 정보를 화면에 반영
+
+                runOnUiThread {
+
+                    Glide.with(mContext).load(mProject.imageUrl).into(projectImg)
+                    projectTitle.text = mProject.title
+                }
+            }
+    }
+
 }
