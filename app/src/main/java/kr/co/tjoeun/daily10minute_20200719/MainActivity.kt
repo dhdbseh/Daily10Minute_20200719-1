@@ -11,7 +11,7 @@ class MainActivity : BaseActivity() {
 
     val mProjectList = ArrayList<Project>()
 
-    lateinit var mProject: ProjectAdapter
+    lateinit var mProjectAdapter: ProjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
 
 //        서버에서 받아오고 난 후에 어댑터 연결
         mProjectAdapter = ProjectAdapter(mContext, R.layout.project_list_item, mProjectList)
-        projectListView.adapter = mProject
+        projectListView.adapter = mProjectAdapter
 
     }
 
@@ -47,13 +47,13 @@ class MainActivity : BaseActivity() {
 //                projects JSONArray 내부의 데이터들을 추출
 //                반복문 i 로 돌면서 하나하나 가져오자꾸나
 
-                for ( i in 0 until projects.length()) {
+                for (i in 0 until projects.length()) {
 
 //                    i번쨰 JSONObject를 추출하자
                     val projectObj = projects.getJSONObject(i)
-                    
+
 //                    프로젝트 정보 JSONObject -> Project 형태의 인스턴스로 변환 -> 목록에 담아야함.
-                    
+
 //                    JSON -> Project로 변환
 
                     val project = Project.getProjectFromJson(projectObj)
@@ -63,6 +63,13 @@ class MainActivity : BaseActivity() {
 
                 }
 
+//                목록이 추가되는 시점이 -> 어댑터 연결 이후일 수도 있다.
+//                어댑터가 연결되고 나서 -> 내용이 추가되는 것일 수도 있다.
+//                새로고침 시켜줄 필요가 있다.
+
+                runOnUiThread {
+                    mProjectAdapter.notifyDataSetChanged()
+                }
             }
 
         })
