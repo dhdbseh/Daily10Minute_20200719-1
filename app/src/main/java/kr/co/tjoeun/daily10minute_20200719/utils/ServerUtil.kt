@@ -209,7 +209,7 @@ class ServerUtil {
 //            !!<- 절대 널이 아니다.
 //            GET / DELETE 방식의 파라미터 첨부는 QUERY에 담아야 함.
 //            주소에 붙여주는 방식 -> 쉽게 가공하도록 도와주는 변수 생성.
-            val urlBuilder = "${BASE_URL}/project/1${projectId}".toHttpUrlOrNull()!!.newBuilder()
+            val urlBuilder = "${BASE_URL}/project/${projectId}".toHttpUrlOrNull()!!.newBuilder()
 //            urlBuilder.addEncodedQueryParameter(" 이름표","전달값")
 
 //            주소 가공이 끝나면 최종 String으로 변환.

@@ -2,6 +2,7 @@ package kr.co.tjoeun.daily10minute_20200719
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.tjoeun.daily10minute_20200719.adapter.ProjectAdapter
 import kr.co.tjoeun.daily10minute_20200719.datas.Project
@@ -28,10 +29,13 @@ class MainActivity : BaseActivity() {
 
             val clickedProject = mProjectList[position]
 
+            Log.d("아이디값", clickedProject.id.toString())
+
             val myIntent = Intent(mContext, ViewProjectDetailActivity::class.java)
 
 //            몇번 프로젝트가 눌렸는지 프로젝트의 id값만 전달
             myIntent.putExtra("projectId", clickedProject.id)
+            startActivity(myIntent)
         }
 
     }

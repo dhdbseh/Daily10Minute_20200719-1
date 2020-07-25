@@ -2,10 +2,10 @@ package kr.co.tjoeun.daily10minute_20200719
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_view_project_detail.*
 import kotlinx.android.synthetic.main.activity_view_project_detail.projectImg
-import kotlinx.android.synthetic.main.project_list_item.*
 import kr.co.tjoeun.daily10minute_20200719.datas.Project
 import kr.co.tjoeun.daily10minute_20200719.utils.ServerUtil
 import org.json.JSONObject
@@ -41,6 +41,7 @@ class ViewProjectDetailActivity : BaseActivity() {
     //    프로젝트 상세 정보를 불러오는 기능
     fun getProjectDetailFromServer() {
 
+        Log.d("m아이디값", mProjectId.toString())
         ServerUtil.getRequestProjectDetail(mContext, mProjectId, object : ServerUtil.JsonResponseHandler {
             override fun onResponse(json: JSONObject) {
 
@@ -56,7 +57,13 @@ class ViewProjectDetailActivity : BaseActivity() {
                 runOnUiThread {
 
                     Glide.with(mContext).load(mProject.imageUrl).into(projectImg)
-                    projectTitle.text = mProject.title
+                    projectTxt.text = mProject.title
+
+                    projectDescriptionTxt.text = mProject.description
+
+                    proofTxt.text = mProject.proofMethod
+                    challengerCountTxt.text = "${mProject.ongoingUserCount}명 도전 진행중"
+
                 }
             }
 

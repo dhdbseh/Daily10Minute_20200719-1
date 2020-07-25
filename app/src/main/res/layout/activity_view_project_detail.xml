@@ -51,6 +51,7 @@
             android:text="설명 : " />
 
         <TextView
+            android:id="@+id/projectDescriptionTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="설명 내용이 적힐 자리"
@@ -76,6 +77,7 @@
             android:text="인증 방법 : " />
 
         <TextView
+            android:id="@+id/proofTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="인증 방법이 적힐 자리"
@@ -101,6 +103,7 @@
             android:text="참여 인원 수 : " />
 
         <TextView
+            android:id="@+id/challengerCountTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="~~명 도전 진행중"

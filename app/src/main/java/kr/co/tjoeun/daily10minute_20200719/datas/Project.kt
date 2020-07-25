@@ -9,6 +9,9 @@ class Project {
     var imageUrl = ""
     var description = ""
 
+    var proofMethod = ""
+    var ongoingUserCount = 0
+
     companion object{
 
 
@@ -21,6 +24,9 @@ class Project {
             p.title = json.getString("title")
             p.imageUrl = json.getString("img_url")
             p.description = json.getString("description")
+
+            p.proofMethod = json.getString("proof_method")
+            p.ongoingUserCount = json.getInt("ongoing_users_count")
 
 //            완성된 p를 리턴
             return p
