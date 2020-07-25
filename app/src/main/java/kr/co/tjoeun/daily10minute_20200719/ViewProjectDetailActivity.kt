@@ -17,7 +17,7 @@ class ViewProjectDetailActivity : BaseActivity() {
     var mProjectId = 0
 
 //    이 화면에서 보여줄 프로젝트 자체 변수
-    lateinit var mProject =
+    lateinit var mProject : Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +41,8 @@ class ViewProjectDetailActivity : BaseActivity() {
     //    프로젝트 상세 정보를 불러오는 기능
     fun getProjectDetailFromServer() {
 
-        ServerUtil.getRequestProjectList(mContext, mProjectId, object : ServerUtil.JsonResponseHandler)
-
-            override fun onResponse(json: JSONObject){
+        ServerUtil.getRequestProjectDetail(mContext, mProjectId, object : ServerUtil.JsonResponseHandler {
+            override fun onResponse(json: JSONObject) {
 
                 val data = json.getJSONObject("data")
 
@@ -60,6 +59,9 @@ class ViewProjectDetailActivity : BaseActivity() {
                     projectTitle.text = mProject.title
                 }
             }
+
+        })
+
     }
 
 }
