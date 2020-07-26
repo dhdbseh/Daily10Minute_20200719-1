@@ -57,6 +57,13 @@ class Proof {
 
             }
 
+//            인증글 작성자 정보 파싱
+//            user JSONObject 추출 -> User 클래스 변환 -> p.user에 저장
+
+            val userObj = json.getJSONObject("user")
+            val user = User.getUserFromJson(userObj)
+            p.user = user
+
             return p
         }
 
