@@ -27,8 +27,8 @@ class ProjectAdapter(
         val row = tempRow!!
 
         val projectImg = row.findViewById<ImageView>(R.id.projectImg)
-        val projectTitle = row.findViewById<TextView>(R.id.projectTitle)
-        val projectDescription = row.findViewById<TextView>(R.id.projectDescription)
+        val projectTitle = row.findViewById<TextView>(R.id.projectTitleTxt)
+        val projectDescription = row.findViewById<TextView>(R.id.projectDescriptionTxt)
 
         val data = mList[position]
 
