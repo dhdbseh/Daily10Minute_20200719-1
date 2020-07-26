@@ -19,12 +19,17 @@ class ServerUtil {
 
     companion object {
 
-//        접근할 서버 주소를 담는 변수
+        //        접근할 서버 주소를 담는 변수
         private val BASE_URL = "http://15.164.153.174"
 
 //        로그인 요청을 해주는 기능
 
-        fun postRequestLogin(context: Context, email:String, pw:String, handler: JsonResponseHandler?) {
+        fun postRequestLogin(
+            context: Context,
+            email: String,
+            pw: String,
+            handler: JsonResponseHandler?
+        ) {
 
 //            앱을 클라이언트 역할로 동작하게 해주는 변수
             val client = OkHttpClient()
@@ -133,7 +138,13 @@ class ServerUtil {
 
 //        회원가입 요청을 해주는 기능
 
-        fun putRequestSignUp(context: Context, email:String, pw:String, nickName:String, handler: JsonResponseHandler?) {
+        fun putRequestSignUp(
+            context: Context,
+            email: String,
+            pw: String,
+            nickName: String,
+            handler: JsonResponseHandler?
+        ) {
 
 //            앱을 클라이언트 역할로 동작하게 해주는 변수
             val client = OkHttpClient()
@@ -367,6 +378,174 @@ class ServerUtil {
 
         }
 
+
+        //        프로젝트 목록을 가져와주는 기능
+        fun getRequestProjectList(context: Context, handler: JsonResponseHandler?) {
+
+//            서버에 Request를 날려주는 변수
+            val client = OkHttpClient()
+
+//            !!<- 절대 널이 아니다.
+//            GET / DELETE 방식의 파라미터 첨부는 QUERY에 담아야 함.
+//            주소에 붙여주는 방식 -> 쉽게 가공하도록 도와주는 변수 생성.
+            val urlBuilder = "${BASE_URL}/project".toHttpUrlOrNull()!!.newBuilder()
+//            urlBuilder.addEncodedQueryParameter(" 이름표","전달값")
+
+//            주소 가공이 끝나면 최종 String으로 변환.
+//            어디로 갈지 (url) + 어떤 데이터를 가져갈지 (parameter) 첨부된 String
+            val urlString = urlBuilder.build().toString()
+
+
+//            실제 전송 정보를 담는 Request 생성
+            val request = Request.Builder()
+                .url(urlString)
+                .get()
+                .header("X-Http-Token", ContextUtil.getLoginUserToken(context))
+                .build()
+
+//            client 변수를 이용하여 실제 호출 -> 응답 처리
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+//                    서버 연결 자체에 실패한 경우 (단선, 와이파이 끊김, 서버 다운)
+//                    어떤 일이 생겨서 실패했는지 로그 출력
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+//                    서버 연결 자체는 성공 -> 원하는 결과를 얻었다는 보장은 없다.
+//                    응답 내용을 분석(JSONObject)해서 -> 화면에 반영.
+
+//                    응답 내용을 String 으로 저장
+                    val bodyString = response.body!!.string()
+
+//                    저장한 String을 가지고 -> JSONObject로 재가공 (분석의 편의성)
+
+                    val json = JSONObject(bodyString)
+
+//                    가공된 JSON을 로그로 출력
+                    Log.d("서버 응답", json.toString())
+
+//                    JSON내용 분석은 -> 화면에서 진행하게 넘겨주자.
+                    handler?.onResponse(json)
+                }
+
+            })
+
+        }
+
+
+        //        원하는 프로젝트의 상세정보를 불러오는 기능
+        fun getRequestProjectDetail(context: Context, projectId: Int, handler: JsonResponseHandler?) {
+
+//            서버에 Request를 날려주는 변수
+            val client = OkHttpClient()
+
+//            !!<- 절대 널이 아니다.
+//            GET / DELETE 방식의 파라미터 첨부는 QUERY에 담아야 함.
+//            주소에 붙여주는 방식 -> 쉽게 가공하도록 도와주는 변수 생성.
+            val urlBuilder = "${BASE_URL}/project/${projectId}".toHttpUrlOrNull()!!.newBuilder()
+//            urlBuilder.addEncodedQueryParameter(" 이름표","전달값")
+
+//            주소 가공이 끝나면 최종 String으로 변환.
+//            어디로 갈지 (url) + 어떤 데이터를 가져갈지 (parameter) 첨부된 String
+            val urlString = urlBuilder.build().toString()
+
+
+//            실제 전송 정보를 담는 Request 생성
+            val request = Request.Builder()
+                .url(urlString)
+                .get()
+                .header("X-Http-Token", ContextUtil.getLoginUserToken(context))
+                .build()
+
+//            client 변수를 이용하여 실제 호출 -> 응답 처리
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+//                    서버 연결 자체에 실패한 경우 (단선, 와이파이 끊김, 서버 다운)
+//                    어떤 일이 생겨서 실패했는지 로그 출력
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+//                    서버 연결 자체는 성공 -> 원하는 결과를 얻었다는 보장은 없다.
+//                    응답 내용을 분석(JSONObject)해서 -> 화면에 반영.
+
+//                    응답 내용을 String 으로 저장
+                    val bodyString = response.body!!.string()
+
+//                    저장한 String을 가지고 -> JSONObject로 재가공 (분석의 편의성)
+
+                    val json = JSONObject(bodyString)
+
+//                    가공된 JSON을 로그로 출력
+                    Log.d("서버 응답", json.toString())
+
+//                    JSON내용 분석은 -> 화면에서 진행하게 넘겨주자.
+                    handler?.onResponse(json)
+                }
+
+            })
+
+        }
+
+
+//        프로젝트의 상세정보 + 참여중 인우너 목록 API 호출 기능
+
+        fun getRequestProjectDetailWithUser(context: Context, projectId: Int, handler: JsonResponseHandler?) {
+
+//            서버에 Request를 날려주는 변수
+            val client = OkHttpClient()
+
+//            !!<- 절대 널이 아니다.
+//            GET / DELETE 방식의 파라미터 첨부는 QUERY에 담아야 함.
+//            주소에 붙여주는 방식 -> 쉽게 가공하도록 도와주는 변수 생성.
+            val urlBuilder = "${BASE_URL}/project/${projectId}".toHttpUrlOrNull()!!.newBuilder()
+            urlBuilder.addEncodedQueryParameter("need_user_list", true.toString())
+
+//            주소 가공이 끝나면 최종 String으로 변환.
+//            어디로 갈지 (url) + 어떤 데이터를 가져갈지 (parameter) 첨부된 String
+            val urlString = urlBuilder.build().toString()
+
+
+//            실제 전송 정보를 담는 Request 생성
+            val request = Request.Builder()
+                .url(urlString)
+                .get()
+                .header("X-Http-Token", ContextUtil.getLoginUserToken(context))
+                .build()
+
+//            client 변수를 이용하여 실제 호출 -> 응답 처리
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+//                    서버 연결 자체에 실패한 경우 (단선, 와이파이 끊김, 서버 다운)
+//                    어떤 일이 생겨서 실패했는지 로그 출력
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+//                    서버 연결 자체는 성공 -> 원하는 결과를 얻었다는 보장은 없다.
+//                    응답 내용을 분석(JSONObject)해서 -> 화면에 반영.
+
+//                    응답 내용을 String 으로 저장
+                    val bodyString = response.body!!.string()
+
+//                    저장한 String을 가지고 -> JSONObject로 재가공 (분석의 편의성)
+
+                    val json = JSONObject(bodyString)
+
+//                    가공된 JSON을 로그로 출력
+                    Log.d("서버 응답", json.toString())
+
+//                    JSON내용 분석은 -> 화면에서 진행하게 넘겨주자.
+                    handler?.onResponse(json)
+                }
+
+            })
+
+        }
 
     }
 
