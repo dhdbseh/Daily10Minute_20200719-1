@@ -12,6 +12,10 @@ class Project {
     var proofMethod = ""
     var ongoingUserCount = 0
 
+//    내 진행 상태를 표시하는 변수 : null -> 참가 해본 적 없는 상태
+    var myLastStatus : String? = null
+
+
     companion object {
 
 //        적절한 JSONObject를 재료로 받아서 => Project 객체로 뽑아주는 기능
@@ -29,6 +33,12 @@ class Project {
             p.proofMethod = json.getString("proof_method")
             p.ongoingUserCount = json.getInt("ongoing_users_count")
 
+//            내 진행 상태는 null이 아닐 때만 파싱하자.
+//            null이니까 신경써달라?
+            if (!json.isNull("my_last_status")) {
+//                파싱 진행
+                p.myLastStatus = json.getString("my_last_status")
+            }
 
 //            완성된 p를 리턴
             return p
