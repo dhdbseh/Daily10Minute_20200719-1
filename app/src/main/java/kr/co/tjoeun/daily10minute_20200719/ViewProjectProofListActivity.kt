@@ -3,6 +3,7 @@ package kr.co.tjoeun.daily10minute_20200719
 import android.app.DatePickerDialog
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_view_project_proof_list.*
+import kr.co.tjoeun.daily10minute_20200719.datas.Project
 import kr.co.tjoeun.daily10minute_20200719.datas.Proof
 import kr.co.tjoeun.daily10minute_20200719.utils.ServerUtil
 import org.json.JSONObject
@@ -14,6 +15,9 @@ class ViewProjectProofListActivity : BaseActivity() {
 
 //    몇번 프로젝트에 대한 인증 목록인지
     var mProjectId = 0
+
+//    보고 있는 프로젝트가 어떤 프로젝트인지
+    lateinit var mProject : Project
 
 //    인증 게시글들이 담길 목록
     val mProofList = ArrayList<Proof>()
@@ -91,6 +95,33 @@ class ViewProjectProofListActivity : BaseActivity() {
 
         ServerUtil.getRequestProjectDetailWithProofList(mContext, mProjectId, dateStr, object : ServerUtil.JsonResponseHandler {
             override fun onResponse(json: JSONObject) {
+
+                val data = json.getJSONObject("data")
+
+                val projectObj = data.getJSONObject("project")
+
+//                이 화면에서 보는 프로젝트 정보 대입
+                mProject = Project.getProjectFromJson(projectObj)
+
+//                인증글 목록을 파싱해서 -> 멤버 목록에 반영
+                val proofs = projectObj.getJSONArray("proofs")
+
+                for (i in 0 until proofs.length()){
+                    val proofObj = proofs.getJSONObject(i)
+//                    JSONObject -> Proof로 변환 (우리가 직접 만든 클래스 고유 기능 사용)
+                    val proof = Proof.getProofFromJson(proofObj)
+//                    뽑힌 Proof 타입의 변수를 목록에 추가
+                    mProofList.add(proof)
+                }
+
+//                프로젝트 제목 등 UI 반영 작업
+                runOnUiThread{
+
+                    projectTitleTxt.text = mProject.title
+
+//
+
+                }
 
             }
 
