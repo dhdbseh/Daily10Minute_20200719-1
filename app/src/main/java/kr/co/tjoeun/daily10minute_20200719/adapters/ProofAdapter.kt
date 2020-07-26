@@ -27,6 +27,19 @@ class ProofAdapter(
 
         val row = tempRow!!
 
+        val userProfileImg = row.findViewById<ImageView>(R.id.userProfileImg)
+        val userNickNameTxt = row.findViewById<ImageView>(R.id.userNickNameTxt)
+        val proofTimeTxt = row.findViewById<ImageView>(R.id.proofTimeTxt)
+        val contentTxt = row.findViewById<ImageView>(R.id.contentTxt)
+        val proofImg = row.findViewById<ImageView>(R.id.proofImg)
+
+        val data = mList[position]
+
+        contentTxt.text = data.content
+
+        userNickNameTxt.text = data.user.nickName
+        Glide.with(mContext).load(data.user.profileImageList[0].imageUrl).into(userProfileImg)
+
         return row
     }
 
