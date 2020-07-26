@@ -30,6 +30,15 @@ class ViewProjectDetailActivity : BaseActivity() {
 
     override fun setupEvents() {
 
+//        다른 사람들의 참여 인증 확인하는 버튼
+        viewOtherProofBtn.setOnClickListener {
+
+//            인증 확인화면 진입 -> 어떤 프로젝트에 대해서 인지 id 값만 인증 확인 화면에 전달.
+            val myIntent = Intent(mContext, ViewProjectProofListActivity::class.java)
+            myIntent.putExtra("projectId", mProjectId)
+            startActivity(myIntent)
+        }
+
         joinProjectBtn.setOnClickListener {
 
 //            정말 참여할건지? 물어보자.
@@ -56,6 +65,14 @@ class ViewProjectDetailActivity : BaseActivity() {
 
 //                        별도 기능으로 만들어진 Ui 데이터 세팅 기능 실행
                             setProjectDataToUI()
+
+//                            서버가 최신 정보를 못내려줌 -> 강제로 다시 불러오자.
+                            getProjectDetailFromServer()
+
+//                            토스트로 참여 신청 성공 메세지 출력
+                            runOnUiThread {
+                                Toast.makeText(mContext, "프로젝트에 참가 했습니다.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                         else {
                             val message = json.getString("message")
