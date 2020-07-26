@@ -2,6 +2,9 @@ package kr.co.tjoeun.daily10minute_20200719
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_view_project_proof_list.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ViewProjectProofListActivity : BaseActivity() {
     override fun setupEvents() {
@@ -10,7 +13,20 @@ class ViewProjectProofListActivity : BaseActivity() {
 
     override fun setValues() {
 
+//        proofDate에 담긴 일시를 -> 2020년 6월 9일 형태로 문구 출력.
+//        SimpleDateFormat의 기능중 format 사용
+
+        val sdf = SimpleDateFormat("yyyy년 M월 d일")
+
+        val proofDateStr = sdf.format(proofDate.time)
+
+        proofDateTxt.text = proofDateStr
+
     }
+
+//    인증을 확인할 날짜를 저장해주는 변수
+//    proofDate -> 기본 값이 현재 시간으로 저장됨.
+    val proofDate = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
