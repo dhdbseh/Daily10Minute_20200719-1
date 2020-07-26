@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
@@ -140,6 +141,15 @@ class ViewProjectDetailActivity : BaseActivity() {
             proofMethodTxt.text = mProject.proofMethod
             challengerCountTxt.text = "${mProject.ongoingUserCount}명 도전 진행중"
 
+//            참여중 / 아니냐에 따라 보여지는 버튼이 다르게 하자
+            if(mProject.myLastStatus == "ONGOING") {
+                ongoingButtonLayout.visibility = View.VISIBLE
+                joinProjectBtn.visibility = View.GONE
+            }
+            else{
+                ongoingButtonLayout.visibility = View.GONE
+                joinProjectBtn.visibility = View.VISIBLE
+            }
         }
     }
 
