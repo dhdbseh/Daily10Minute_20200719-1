@@ -1,6 +1,7 @@
 package kr.co.tjoeun.daily10minute_20200719.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -117,6 +118,9 @@ class ProofAdapter(
             val myIntent = Intent(mContext, ViewProofDetailActivity::class.java)
 
 //            인증 게시글의 id 값만 넘겨서 -> 상세화면으로
+            myIntent.putExtra("proof_id", data.id)
+
+            mContext.startActivity(myIntent)
 
         }
 

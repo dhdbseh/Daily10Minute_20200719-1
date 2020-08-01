@@ -84,8 +84,6 @@ class Proof {
             return p
         }
 
-
     }
-
 
 }
